@@ -54,3 +54,7 @@ function game(){
     }
     else alert(`You lost ${playerScore} to ${computerScore}`);
 }
+
+window.onload = function() {
+    game();
+};
