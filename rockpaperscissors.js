@@ -36,25 +36,56 @@ function playRound(player, computer=getComputerChoice()){
     }
 }
 
-function game(){
-    let playerScore = 0;
-    let computerScore = 0;
-    alert("Get ready to play Janken (Rock Paper Scissors)");
-    while(playerScore < 3 && computerScore < 3) {
-        alert(`Score: Player - ${playerScore} Computer - ${computerScore}`)
-        let playerInput = window.prompt("SHOOT (Rock, Paper, or Scissors)");
-        let computerInput = getComputerChoice();
-        let result = playRound(playerInput, computerInput);
-        alert(result);
-        if(result.includes("WIN!")) playerScore++;
-        else if(result.includes("lose...")) computerScore++;
-    }
-    if(playerScore === 3){
-        alert(`Congrats you win ${playerScore} to ${computerScore}`);
-    }
-    else alert(`You lost ${playerScore} to ${computerScore}`);
-}
+let playerScore = 0;
+let computerScore = 0;
+let playerWins = 0;
+let computerWins = 0;
+let playerScoreTotal = 0;
+let computerScoreTotal = 0;
 
-window.onload = function() {
-    game();
-};
+const scoreContainer = document.querySelector(".score");
+const score = document.createElement("h3");
+score.textContent = `Player: ${playerScore} - Computer: ${computerScore}`
+scoreContainer.appendChild(score);
+
+const statContainer = document.querySelector(".stats");
+const statsPointTotals = document.createElement("p");
+const statsWins = document.createElement("p");
+statContainer.appendChild(statsPointTotals);
+statContainer.appendChild(statsWins);
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        // alert(button.id);
+        console.log(button.id);
+        let result = playRound(button.id);
+        if(result.includes("WIN!")){
+            playerScore++;
+            playerScoreTotal++;
+        }
+        else if(result.includes("lose...")){
+            computerScore++;
+            computerScoreTotal++;
+        }
+        score.textContent = `Player: ${playerScore} - Computer: ${computerScore}`
+        statsPointTotals.textContent = `Player Total Points: ${playerScoreTotal} - Computer Total Points: ${computerScoreTotal}`
+
+
+        if(playerScore === 3){
+            alert(`Congrats you win ${playerScore} to ${computerScore}`);
+            playerScore = 0;
+            computerScore = 0;
+            playerWins++;
+            statsWins.textContent = `Player Total Wins: ${playerWins} - Computer Total Wins: ${computerWins}`
+        }
+        else if(computerScore ===3 ){
+            alert(`You lost ${playerScore} to ${computerScore}`);
+            playerScore = 0;
+            computerScore = 0;
+            computerWins++;
+            statsWins.textContent = `Player Total Wins: ${playerWins} - Computer Total Wins: ${computerWins}`
+        }
+    });
+});
+
